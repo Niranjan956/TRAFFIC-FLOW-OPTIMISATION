@@ -1,0 +1,45 @@
+import pandas as pd
+import numpy as np
+
+# Simulated historical traffic data (in vehicles per hour)
+data = {
+    "time_of_day": ["morning", "afternoon", "evening"],
+    "traffic_data": [
+        [100, 120, 150, 200, 250],  # Morning data
+        [80, 90, 110, 130, 160],    # Afternoon data
+        [200, 220, 250, 300, 350]   # Evening data
+    ]
+}
+
+# Create a DataFrame from the historical traffic data
+traffic_df = pd.DataFrame(data)
+
+# Function to predict traffic based on time of day
+def predict_traffic(time_of_day):
+    if time_of_day in traffic_df['time_of_day'].values:
+        traffic_values = traffic_df.loc[traffic_df['time_of_day'] == time_of_day, 'traffic_data'].values[0]
+        return round(np.mean(traffic_values))
+    return "Invalid time of day"
+
+# Chatbot function to interact with users
+def traffic_chatbot():
+    print("Welcome to the Traffic Flow Optimization Chatbot!")
+    while True:
+        user_input = input("\nEnter a time of day (morning, afternoon, evening) or 'exit' to quit: ").lower()
+        if user_input == 'exit':
+            print("Thank you for using the Traffic Flow Optimization Chatbot. Safe travels!")
+            break
+        prediction = predict_traffic(user_input)
+        if isinstance(prediction, int):
+            print(f"Predicted traffic for {user_input}: {prediction} vehicles per hour.")
+            if prediction > 200:
+                print("Warning: High traffic expected! Consider alternative routes.")
+        else:
+            print(prediction)
+
+# Main function to run the program
+def main():
+    traffic_chatbot()
+
+if __name__ == "__main__":
+    main()
